@@ -166,3 +166,21 @@ The `zap` and `zap-advanced` parsers where changed to increase the consistency b
 The container autodiscovery will now be enabled by default. Additionally the container autodiscovery will now check if the configured scantype is installed in the namespace before it creates a scheduled scan (just like the service autodiscovery). 
 
 ➡️  [Reference: #1112](https://github.com/secureCodeBox/secureCodeBox/pull/1112)
+
+### Autodiscovery takes a list of scans in config file
+The autodiscovery now takes a list of scans in its configuration. Each configured scan needs a unique name so that the autodiscovery is able to distinguish between scans. Because of this it is possible to configure multiple scans with the same scan type.
+
+Example config:
+```yaml
+    scanConfig:
+      - scanType: trivy-image
+        name: "my-trivy-scan"
+        parameters:
+          - "{{ .ImageID }}"
+        repeatInterval: "168h"
+      - scanType: trivy-image
+        name: "second-trivy-scan"
+        parameters:
+          - "{{ .ImageID }}"
+        repeatInterval: "168h"
+```
